@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maersk assignment</title>
+  </head>
+  <style>
+    #container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+    }
+    #boxContainer {
+      background: '#f3f3f3';
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .child {
+      width: 25%;
+    }
+    .action {
+      width: 25%;
+      padding: 10px;
+    }
+    #shuffle,
+    #sort {
+      background: blue;
+      color: white;
+      padding: 5px;
+      cursor: pointer;
+    }
+    @media only screen and (max-width: 480px) {
+      #container {
+        flex-direction: column-reverse;
+      }
+      #boxContainer {
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        flex-wrap: unset;
+      }
+      .child {
+        width: 100%;
+      }
+    }
+  </style>
+  <body>
+    <div id="container">
+      <div id="boxContainer"></div>
+
+      <div class="action">
+        <button id="shuffle">Shuffle</button>
+        <button id="sort">sort</button>
+      </div>
+    </div>
+    <script>
+      const element = document.getElementById('boxContainer');
+      const shuffle = document.getElementById('shuffle');
+      const sort = document.getElementById('sort');
+
+      shuffle.addEventListener('click', shuffleElements);
+      sort.addEventListener('click', sortElements);
+      const cacheColornNumb = {
+        1: '#000',
+        2: '#333',
+        3: '#fff',
+        4: '#efefef',
+        5: '#72c3dc',
+        6: '#2b8ead',
+        7: '#6fc8a8',
+        8: '#bfbfbf',
+        9: '#2f454e',
+      };
+      let listLength = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+      init();
+      function generateHtml(value, color) {
+        const node = document.createElement('div');
+        node.style = `height:50px; border-left: 10px solid ${color}; background:#d1c4c4; margin:5px; display:flex; align-items:center; justify-content:center`;
+        node.innerHTML = value;
+        node.classList.add('child');
+        return node;
+      }
+
+      function init() {
+        for (i = listLength[0]; i <= listLength.length; i++) {
+          const node = generateHtml(i, cacheColornNumb[i]);
+          element.appendChild(node);
+        }
+      }
+
+      function shuffleElements() {
+        element.innerHTML = '';
+        shuffleArray().forEach((item) => {
+          const node = generateHtml(item, cacheColornNumb[item]);
+          element.appendChild(node);
+        });
+      }
+
+      function shuffleArray() {
+        listLength.forEach((item, i) => {
+          const index = Math.floor(Math.random() * i);
+          let temp = listLength[i];
+          listLength[i] = listLength[index];
+          listLength[index] = temp;
+        });
+        return listLength;
+      }
+      function sortElements() {
+        element.innerHTML = '';
+        listLength
+          .sort((a, b) => a - b)
+          .forEach((item) => {
+            const node = generateHtml(item, cacheColornNumb[item]);
+            element.appendChild(node);
+          });
+      }
+    </script>
+  </body>
+</html>
